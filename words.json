@@ -1,50 +1,98 @@
 [
   {
     "id": "word_1",
-    "word": "Domestic",
-    "transcription": "/dəˈmestɪk/",
-    "translation": "Внутрішній, побутовий",
-    "exEn": "GDP growth depends on both domestic and foreign trade.",
-    "exUa": "Ріст ВВП залежить як від внутрішньої, так і від зовнішньої торгівлі."
+    "word": "Maintenance",
+    "transcription": "/ˈmeɪntənəns/",
+    "translation": "Технічне обслуговування, ремонт",
+    "exEn": "The building requires regular maintenance to keep it in good condition.",
+    "exUa": "Будівля потребує регулярного технічного обслуговування, щоб підтримувати її в хорошому стані."
   },
   {
     "id": "word_2",
-    "word": "Schedule",
-    "transcription": "/ˈʃedjuːl/",
-    "translation": "Розклад, графік",
-    "exEn": "As a director, my schedule is always completely full.",
-    "exUa": "Як у директора, мій графік завжди повністю заповнений."
+    "word": "Chore",
+    "transcription": "/tʃɔːr/",
+    "translation": "Рутинна робота, обов'язок (хатній)",
+    "exEn": "Doing the dishes is my least favorite household chore.",
+    "exUa": "Миття посуду — мій найменш улюблений хатній обов'язок."
   },
   {
     "id": "word_3",
-    "word": "Appliance",
-    "transcription": "/əˈplaɪəns/",
-    "translation": "Побутовий прилад",
-    "exEn": "The modern smart kitchen is full of electronic appliances.",
-    "exUa": "Сучасна розумна кухня повна електронних побутових приладів."
+    "word": "Renovate",
+    "transcription": "/ˈrenəveɪt/",
+    "translation": "Оновлювати, робити ремонт",
+    "exEn": "We plan to renovate the kitchen before the end of the year.",
+    "exUa": "Ми плануємо відремонтувати кухню до кінця року."
   },
   {
     "id": "word_4",
-    "word": "Prioritize",
-    "transcription": "/praɪˈɒrɪtaɪz/",
-    "translation": "Визначати пріоритети",
-    "exEn": "A good manager knows how to prioritize daily tasks effectively.",
-    "exUa": "Хороший менеджер знає, як ефективно визначати пріоритети щоденних завдань."
+    "word": "Negotiate",
+    "transcription": "/nɪˈɡəʊʃieɪt/",
+    "translation": "Вести переговори, домовлятися",
+    "exEn": "As a director, you need to negotiate the best terms for the contract.",
+    "exUa": "Як директор, ви повинні узгодити найкращі умови для контракту."
   },
   {
     "id": "word_5",
-    "word": "Consignment",
-    "transcription": "/kənˈsaɪnmənt/",
-    "translation": "Вантаж, партія товарів",
-    "exEn": "The new consignment of goods has just arrived at the warehouse.",
-    "exUa": "Нова партія товарів щойно прибула на склад."
+    "word": "Revenue",
+    "transcription": "/ˈrevənjuː/",
+    "translation": "Дохід, виручка",
+    "exEn": "The company’s annual revenue increased by fifteen percent.",
+    "exUa": "Річний дохід компанії зріс на п'ятнадцять відсотків."
   },
   {
     "id": "word_6",
-    "word": "Delay",
-    "transcription": "/dɪˈleɪ/",
-    "translation": "Затримка, відкладати",
-    "exEn": "Bad weather can cause a serious delay in flight schedules.",
-    "exUa": "Погана погода може спричинити серйозну затримку в розкладі рейсів."
+    "word": "Acquisition",
+    "transcription": "/ˌækwɪˈzɪʃn/",
+    "translation": "Придбання, поглинання (компанії)",
+    "exEn": "The acquisition of the new startup will expand our market share.",
+    "exUa": "Придбання нового стартапу розширить нашу частку ринку."
+  },
+  {
+    "id": "word_7",
+    "word": "Itinerary",
+    "transcription": "/aɪˈtɪnərəri/",
+    "translation": "Маршрут, план подорожі",
+    "exEn": "We should check the travel itinerary before booking the flights.",
+    "exUa": "Нам слід перевірити план подорожі перед бронюванням авіаквитків."
+  },
+  {
+    "id": "word_8",
+    "word": "Accommodation",
+    "transcription": "/əˌkɒməˈdeɪʃn/",
+    "translation": "Житло, розміщення",
+    "exEn": "The price of the tour includes first-class accommodation.",
+    "exUa": "У вартість туру входить першокласне житло."
+  },
+  {
+    "id": "word_9",
+    "word": "Delayed",
+    "transcription": "/dɪˈleɪd/",
+    "translation": "Затриманий",
+    "exEn": "Our train was delayed due to unexpected technical issues.",
+    "exUa": "Наш потяг запізнився через непередбачені технічні проблеми."
+  },
+  {
+    "id": "word_10",
+    "word": "Warehouse",
+    "transcription": "/ˈweəhaʊs/",
+    "translation": "Склад, товарний склад",
+    "exEn": "The logistics team is organizing the inventory inside the warehouse.",
+    "exUa": "Логістична команда організовує інвентар усередині складу."
+  },
+  {
+    "id": "word_11",
+    "word": "Distribution",
+    "transcription": "/ˌdɪstrɪˈbjuːʃn/",
+    "translation": "Розподіл, дистрибуція",
+    "exEn": "Effective distribution channels are essential for international trade.",
+    "exUa": "Ефективні канали розподілу є важливими для міжнародної торгівлі."
+  },
+  {
+    "id": "word_12",
+    "word": "Freight",
+    "transcription": "/freɪt/",
+    "translation": "Фрахт, вантаж",
+    "exEn": "Air freight is faster but more expensive than sea transport.",
+    "exUa": "Авіафрахт швидший, але дорожчий за морський транспорт."
   }
 ]
