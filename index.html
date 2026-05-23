@@ -77,6 +77,22 @@
             font-size: 18px; box-sizing: border-box; margin-bottom: 15px; text-align: center;
         }
         input[type="text"]:focus { border-color: var(--primary); outline: none; }
+
+        /* Стилі для глобального прогрес-бару */
+        .progress-container {
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            height: 12px;
+            width: 100%;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background-color: var(--success);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
     </style>
 </head>
 <body>
@@ -125,43 +141,54 @@
     </div>
 
     <div id="resultScreen" class="screen">
-        <div class="quiz-card" style="min-height: 200px;">
+        <div class="quiz-card" style="min-height: 250px;">
             <div>
                 <h2 style="color: var(--primary); margin-top: 0;">Підсумок сесії 📊</h2>
-                <div id="statsPlaceholder" style="font-size: 24px; font-weight: bold; margin: 20px 0;">0 з 0</div>
-                <p style="color: #64748b;">Слова з 3 помилками скинуто на етап вивчення.</p>
+                <div id="statsPlaceholder" style="font-size: 24px; font-weight: bold; margin: 15px 0;">0 з 0</div>
+                
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 20px 0;">
+
+                <div id="totalProgressPlaceholder" style="font-size: 16px; font-weight: 500; color: #64748b; margin-bottom: 5px;">Загальний прогрес: 0 із 0 слів</div>
+                <div class="progress-container">
+                    <div id="progressBar" class="progress-bar"></div>
+                </div>
             </div>
-            <button onclick="restartSession()">Вчити знову 🔄</button>
+            <button onclick="restartSession()" style="margin-top: 15px;">Вчити знову 🔄</button>
         </div>
     </div>
 </div>
 
 <script>
-    let wordsDataset = []; // Завантажується з JSON
-    let dailyWords = [];   // Ті самі 4 (або 20) слів на сьогодні
+    let wordsDataset = []; 
+    let dailyWords = [];   
     let currentWordIndex = 0;
     let isFlipped = false;
     let quizWords = [];
     let wrongAttemptsCounter = 0;
     let masteredCount = 0;
 
-    // Асинхронне завантаження бази даних
     async function initApp() {
         try {
             const response = await fetch('words.json');
             wordsDataset = await response.json();
             selectDailyWords();
+            
+            // Налаштування клавіші Enter
+            document.getElementById('userInput').addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    checkQuiz2Answer();
+                }
+            });
         } catch (error) {
             document.getElementById('translation').innerText = "Помилка завантаження JSON!";
             console.error(error);
         }
     }
 
-    // Відбір слів на сьогодні (ігноруємо 'mastered')
     function selectDailyWords() {
         dailyWords = wordsDataset.filter(w => localStorage.getItem(w.word) !== 'mastered');
-        // Обмежимо порцію до 4 слів для тесту (потім змінимо на 20)
-        dailyWords = dailyWords.slice(0, 4);
+        // Тепер завантажуємо повноцінну порцію з 20 слів на день
+        dailyWords = dailyWords.slice(0, 20);
         
         if(dailyWords.length === 0) {
             document.getElementById('word').innerText = "Все вивчено! 🎉";
@@ -309,7 +336,17 @@
     function showFinalResults() {
         document.getElementById('quizScreen2').classList.remove('active-screen');
         document.getElementById('resultScreen').classList.add('active-screen');
-        document.getElementById('statsPlaceholder').innerText = `${masteredCount} з ${quizWords.length}`;
+        
+        document.getElementById('statsPlaceholder').innerText = `Успішно за сесію: ${masteredCount} з ${quizWords.length}`;
+
+        // Рахуємо загальний прогрес
+        const totalWordsInBase = wordsDataset.length;
+        const totalMastered = wordsDataset.filter(w => localStorage.getItem(w.word) === 'mastered').length;
+        
+        document.getElementById('totalProgressPlaceholder').innerText = `Загальний прогрес: ${totalMastered} із ${totalWordsInBase} слів`;
+        
+        const progressPercentage = totalWordsInBase > 0 ? (totalMastered / totalWordsInBase) * 100 : 0;
+        document.getElementById('progressBar').style.width = `${progressPercentage}%`;
     }
 
     function restartSession() {
@@ -318,14 +355,7 @@
         selectDailyWords();
     }
 
-    // Запуск додатка
     window.onload = initApp;
-    // Додаємо обробку натискання Enter для поля введення
-document.getElementById('userInput').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
-        checkQuiz2Answer();
-    }
-});
 </script>
 </body>
 </html>
