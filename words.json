@@ -1,0 +1,50 @@
+[
+  {
+    "id": "word_1",
+    "word": "Domestic",
+    "transcription": "/dəˈmestɪk/",
+    "translation": "Внутрішній, побутовий",
+    "exEn": "GDP growth depends on both domestic and foreign trade.",
+    "exUa": "Ріст ВВП залежить як від внутрішньої, так і від зовнішньої торгівлі."
+  },
+  {
+    "id": "word_2",
+    "word": "Schedule",
+    "transcription": "/ˈʃedjuːl/",
+    "translation": "Розклад, графік",
+    "exEn": "As a director, my schedule is always completely full.",
+    "exUa": "Як у директора, мій графік завжди повністю заповнений."
+  },
+  {
+    "id": "word_3",
+    "word": "Appliance",
+    "transcription": "/əˈplaɪəns/",
+    "translation": "Побутовий прилад",
+    "exEn": "The modern smart kitchen is full of electronic appliances.",
+    "exUa": "Сучасна розумна кухня повна електронних побутових приладів."
+  },
+  {
+    "id": "word_4",
+    "word": "Prioritize",
+    "transcription": "/praɪˈɒrɪtaɪz/",
+    "translation": "Визначати пріоритети",
+    "exEn": "A good manager knows how to prioritize daily tasks effectively.",
+    "exUa": "Хороший менеджер знає, як ефективно визначати пріоритети щоденних завдань."
+  },
+  {
+    "id": "word_5",
+    "word": "Consignment",
+    "transcription": "/kənˈsaɪnmənt/",
+    "translation": "Вантаж, партія товарів",
+    "exEn": "The new consignment of goods has just arrived at the warehouse.",
+    "exUa": "Нова партія товарів щойно прибула на склад."
+  },
+  {
+    "id": "word_6",
+    "word": "Delay",
+    "transcription": "/dɪˈleɪ/",
+    "translation": "Затримка, відкладати",
+    "exEn": "Bad weather can cause a serious delay in flight schedules.",
+    "exUa": "Погана погода може спричинити серйозну затримку в розкладі рейсів."
+  }
+]

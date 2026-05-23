@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Director's Vocab Builder</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container { width: 100%; max-width: 400px; text-align: center; }
+        .screen { display: none; }
+        .active-screen { display: block; }
+        
+        .flashcard, .quiz-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .flashcard { cursor: pointer; }
+        .word { font-size: 32px; font-weight: bold; margin-bottom: 5px; color: var(--primary); }
+        .transcription { font-size: 18px; color: #64748b; margin-bottom: 15px; }
+        .translation { font-size: 22px; font-weight: 500; }
+        .back-content { border-top: 1px solid #edf2f7; padding-top: 15px; margin-top: 15px; }
+        .example-en { font-style: italic; font-size: 18px; color: #334155; margin-bottom: 8px; }
+        .example-ua { font-size: 16px; color: #64748b; }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+            margin-bottom: 10px;
+        }
+        .audio-btn {
+            background: none; border: none; color: var(--primary); font-size: 24px;
+            cursor: pointer; box-shadow: none; padding: 5px; width: auto; margin-bottom: 0;
+        }
+        .options-container { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .option-btn {
+            background-color: white; color: var(--text); border: 2px solid #e2e8f0;
+            box-shadow: none; text-align: left; padding: 12px 20px; margin-bottom: 0;
+        }
+        .option-btn.wrong { background-color: var(--danger); color: white; border-color: var(--danger); }
+        input[type="text"] {
+            width: 100%; padding: 12px 20px; border: 2px solid #e2e8f0; border-radius: 12px;
+            font-size: 18px; box-sizing: border-box; margin-bottom: 15px; text-align: center;
+        }
+        input[type="text"]:focus { border-color: var(--primary); outline: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="studyScreen" class="screen active-screen">
+        <div class="flashcard" onclick="flipCard()">
+            <div class="front-content">
+                <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+                    <div class="word" id="word">Завантаження...</div>
+                    <button class="audio-btn" onclick="speak(event)">🔊</button>
+                </div>
+                <div class="transcription" id="transcription"></div>
+                <div class="translation" id="translation">Будь ласка, зачекайте</div>
+            </div>
+            <div class="back-content" id="backSection" style="display: none;">
+                <div class="example-en" id="exampleEn"></div>
+                <div class="example-ua" id="exampleUa"></div>
+            </div>
+        </div>
+        <button id="actionBtn" onclick="confirmContext(event)" style="display: none;">Я зрозумів контекст 🔄</button>
+    </div>
+
+    <div id="quizScreen1" class="screen">
+        <div class="quiz-card">
+            <div>
+                <h3 style="margin-top: 0; color: #64748b;">Оберіть правильний переклад:</h3>
+                <div class="word" id="quizWord1">Word</div>
+            </div>
+            <div class="options-container" id="options"></div>
+        </div>
+    </div>
+
+    <div id="quizScreen2" class="screen">
+        <div class="quiz-card">
+            <div>
+                <h3 style="margin-top: 0; color: #64748b;">Впишіть пропущене слово англійською:</h3>
+                <div class="example-en" id="quizSentence" style="font-size: 20px; margin-bottom: 15px; line-height: 1.4;">Sentence...</div>
+                <div class="example-ua" id="quizSentenceUa" style="margin-bottom: 25px;">Переклад...</div>
+            </div>
+            <div>
+                <input type="text" id="userInput" placeholder="Введіть слово" autocomplete="off" autocapitalize="off">
+                <button onclick="checkQuiz2Answer()">Перевірити 🧠</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="resultScreen" class="screen">
+        <div class="quiz-card" style="min-height: 200px;">
+            <div>
+                <h2 style="color: var(--primary); margin-top: 0;">Підсумок сесії 📊</h2>
+                <div id="statsPlaceholder" style="font-size: 24px; font-weight: bold; margin: 20px 0;">0 з 0</div>
+                <p style="color: #64748b;">Слова з 3 помилками скинуто на етап вивчення.</p>
+            </div>
+            <button onclick="restartSession()">Вчити знову 🔄</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let wordsDataset = []; // Завантажується з JSON
+    let dailyWords = [];   // Ті самі 4 (або 20) слів на сьогодні
+    let currentWordIndex = 0;
+    let isFlipped = false;
+    let quizWords = [];
+    let wrongAttemptsCounter = 0;
+    let masteredCount = 0;
+
+    // Асинхронне завантаження бази даних
+    async function initApp() {
+        try {
+            const response = await fetch('words.json');
+            wordsDataset = await response.json();
+            selectDailyWords();
+        } catch (error) {
+            document.getElementById('translation').innerText = "Помилка завантаження JSON!";
+            console.error(error);
+        }
+    }
+
+    // Відбір слів на сьогодні (ігноруємо 'mastered')
+    function selectDailyWords() {
+        dailyWords = wordsDataset.filter(w => localStorage.getItem(w.word) !== 'mastered');
+        // Обмежимо порцію до 4 слів для тесту (потім змінимо на 20)
+        dailyWords = dailyWords.slice(0, 4);
+        
+        if(dailyWords.length === 0) {
+            document.getElementById('word').innerText = "Все вивчено! 🎉";
+            document.getElementById('translation').innerText = "Чудова робота, директоре.";
+            return;
+        }
+        currentWordIndex = 0;
+        loadWord(currentWordIndex);
+    }
+
+    function speak(event) {
+        event.stopPropagation();
+        window.speechSynthesis.cancel(); 
+        const text = document.getElementById('word').innerText;
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        window.speechSynthesis.speak(utterance);
+    }
+
+    function flipCard() {
+        isFlipped = !isFlipped;
+        document.getElementById('backSection').style.display = isFlipped ? 'block' : 'none';
+        document.getElementById('actionBtn').style.display = isFlipped ? 'block' : 'none';
+    }
+
+    function confirmContext(event) {
+        event.stopPropagation();
+        const currentWord = dailyWords[currentWordIndex];
+        localStorage.setItem(currentWord.word, 'quiz1');
+        
+        if(currentWordIndex < dailyWords.length - 1) {
+            currentWordIndex++;
+            loadWord(currentWordIndex);
+        } else {
+            startQuizStage1();
+        }
+    }
+
+    function loadWord(index) {
+        const data = dailyWords[index];
+        document.getElementById('word').innerText = data.word;
+        document.getElementById('transcription').innerText = data.transcription;
+        document.getElementById('translation').innerText = data.translation;
+        document.getElementById('exampleEn').innerText = data.exEn;
+        document.getElementById('exampleUa').innerText = data.exUa;
+        
+        isFlipped = false;
+        document.getElementById('backSection').style.display = 'none';
+        document.getElementById('actionBtn').style.display = 'none';
+    }
+
+    function startQuizStage1() {
+        document.getElementById('studyScreen').classList.remove('active-screen');
+        document.getElementById('quizScreen1').classList.add('active-screen');
+        
+        quizWords = dailyWords.filter(w => localStorage.getItem(w.word) === 'quiz1').sort(() => Math.random() - 0.5);
+        currentWordIndex = 0;
+        showQuiz1Question();
+    }
+
+    function showQuiz1Question() {
+        if (currentWordIndex >= quizWords.length) {
+            startQuizStage2();
+            return;
+        }
+
+        const currentQuizWord = quizWords[currentWordIndex];
+        document.getElementById('quizWord1').innerText = currentQuizWord.word;
+
+        let options = [currentQuizWord.translation];
+        let wrongOptions = wordsDataset.filter(w => w.id !== currentQuizWord.id).map(w => w.translation);
+        options = options.concat(wrongOptions.slice(0, 3)).sort(() => Math.random() - 0.5);
+
+        const optionsContainer = document.getElementById('options');
+        optionsContainer.innerHTML = '';
+
+        options.forEach(option => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = option;
+            btn.onclick = (e) => checkQuiz1Answer(e.target, option, currentQuizWord);
+            optionsContainer.appendChild(btn);
+        });
+    }
+
+    function checkQuiz1Answer(buttonElement, selectedOption, correctWord) {
+        if (selectedOption === correctWord.translation) {
+            localStorage.setItem(correctWord.word, 'quiz2');
+            currentWordIndex++;
+            showQuiz1Question();
+        } else {
+            buttonElement.classList.add('wrong');
+        }
+    }
+
+    function startQuizStage2() {
+        document.getElementById('quizScreen1').classList.remove('active-screen');
+        document.getElementById('quizScreen2').classList.add('active-screen');
+        
+        quizWords = dailyWords.filter(w => localStorage.getItem(w.word) === 'quiz2').sort(() => Math.random() - 0.5);
+        currentWordIndex = 0;
+        masteredCount = 0;
+        showQuiz2Question();
+    }
+
+    function showQuiz2Question() {
+        if (currentWordIndex >= quizWords.length) {
+            showFinalResults();
+            return;
+        }
+
+        wrongAttemptsCounter = 0;
+        const currentQuizWord = quizWords[currentWordIndex];
+        const regex = new RegExp(currentQuizWord.word, 'gi');
+        const hiddenSentence = currentQuizWord.exEn.replace(regex, "______");
+        
+        document.getElementById('quizSentence').innerText = hiddenSentence;
+        document.getElementById('quizSentenceUa').innerText = currentQuizWord.exUa;
+        document.getElementById('userInput').value = '';
+        document.getElementById('userInput').focus();
+    }
+
+    function checkQuiz2Answer() {
+        const currentQuizWord = quizWords[currentWordIndex];
+        const userAnswer = document.getElementById('userInput').value.trim();
+
+        if (userAnswer.toLowerCase() === currentQuizWord.word.toLowerCase()) {
+            localStorage.setItem(currentQuizWord.word, 'mastered');
+            masteredCount++;
+            currentWordIndex++;
+            showQuiz2Question();
+        } else {
+            wrongAttemptsCounter++;
+            if (wrongAttemptsCounter >= 3) {
+                localStorage.setItem(currentQuizWord.word, 'new');
+                alert(`3 помилки! Слово було: "${currentQuizWord.word}". Повертаємо на вивчення.`);
+                currentWordIndex++;
+                showQuiz2Question();
+            } else {
+                alert(`Спробуйте ще раз! Залишилось спроб: ${3 - wrongAttemptsCounter}`);
+            }
+        }
+    }
+
+    function showFinalResults() {
+        document.getElementById('quizScreen2').classList.remove('active-screen');
+        document.getElementById('resultScreen').classList.add('active-screen');
+        document.getElementById('statsPlaceholder').innerText = `${masteredCount} з ${quizWords.length}`;
+    }
+
+    function restartSession() {
+        document.getElementById('resultScreen').classList.remove('active-screen');
+        document.getElementById('studyScreen').classList.add('active-screen');
+        selectDailyWords();
+    }
+
+    // Запуск додатка
+    window.onload = initApp;
+</script>
+</body>
+</html>
